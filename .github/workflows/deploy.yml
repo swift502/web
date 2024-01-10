@@ -1,7 +1,7 @@
 name: Build And Deploy
 
 on: workflow_dispatch
-  
+
 permissions:
   contents: read
   pages: write
@@ -10,19 +10,11 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout the repository using git
-        uses: actions/checkout@v3
-      - name: Install, build, and upload your site output
-        uses: withastro/action@v1
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: ${{ steps.deploy.outputs.url }}
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v1
+      - name: Build and Deploy
+        id: deploy
+        uses: withastro/action@configure-site
+        # when this is released, it will be withastro/action@v2
